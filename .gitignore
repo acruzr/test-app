@@ -1,0 +1,52 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+/dist
+/tmp
+/out-tsc
+/src/env.ts
+/target
+
+# dependencies
+/node_modules
+
+# IDEs and editors
+.txt
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+.mvn/
+mvnw*
+/{user.home}
+
+# System Files
+.DS_Store
+Thumbs.db
+
+#k8s deploy file
+/k8s/out.yaml
+
+#development variavles to deploy
+./build/dev.mk
+/build/dev.mk
+~/build/dev.mk
+build/dev.mk
+/template-new-web.iml
+/springboot-api-test.iml
