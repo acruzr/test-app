@@ -24,7 +24,7 @@ pipeline {
 }
 
 def buildApp() {
-    def appImage = docker.build("jenkins/test-app:${BUILD_NUMBER}", "-f ci_cd/docker/Dockerfile")
+    def appImage = docker.build("jenkins/test-app:${BUILD_NUMBER}", "-f ci_cd/docker/Dockerfile .")
 }
 
 def deployApp(environment) {
