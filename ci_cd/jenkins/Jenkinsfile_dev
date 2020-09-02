@@ -1,0 +1,47 @@
+#!/usr/bin/groovy
+
+pipeline {
+    agent any
+
+    options {
+        disableConcurrentBuilds()
+    }
+
+    stages {
+        stage("Build") {
+            steps {
+                sh "mvn clean install"
+                buildApp()
+            }
+        }
+
+        stage("Deploy - Dev") {
+            steps {
+                deployApp("dev")
+            }
+        }
+    }
+}
+
+def buildApp() {
+    dir("ci_cd") {
+        def appImage = docker.build("jenkins/test-app:${BUILD_NUMBER}")
+    }
+}
+
+def deployApp(environment) {
+    def containerName = ""
+    def port = ""
+
+    if("${environment}" == "dev") {
+        containerName = "test_app_dev"
+        port = 8888
+    } else {
+        println "Environment not valid"
+        System.exit(0)
+    }
+
+    sh "docker ps -f name=${environment} -q | xargs --no-run-if-empty docker stop"
+    sh "docker ps -a -f name=${environment} -q | xargs -r docker rm"
+    sh "docker run -d -p ${port}:5000 --name ${containerName} jenkins/test-app:${BUILD_NUMBER}"
+}
