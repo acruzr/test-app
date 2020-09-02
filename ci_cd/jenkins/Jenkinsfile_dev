@@ -41,5 +41,5 @@ def deployApp(environment) {
 
     sh "docker ps -f name=${environment} -q | xargs --no-run-if-empty docker stop"
     sh "docker ps -a -f name=${environment} -q | xargs -r docker rm"
-    sh "docker run -d -p ${port}:5000 --name ${containerName} jenkins/test-app:${BUILD_NUMBER}"
+    sh "docker run -d -p ${port}:8080 --name ${containerName} jenkins/test-app:${BUILD_NUMBER}"
 }
