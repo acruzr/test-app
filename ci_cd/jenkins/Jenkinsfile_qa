@@ -7,14 +7,12 @@ pipeline {
         disableConcurrentBuilds()
     }
 
-    properties([
-      parameters([
-        string(name: 'DOCKER_IMAGE_TAG', defaultValue: 'acruzr/spring-test-api'),
-        string(name: 'DOCKERFILE_PATH', defaultValue: 'ci_cd/docker/Dockerfile'),
-        string(name: 'DOCKER_CONTAINER_NAME', defaultValue: 'test_api'),
+    parameters {
+        string(name: 'DOCKER_IMAGE_TAG', defaultValue: 'acruzr/spring-test-api')
+        string(name: 'DOCKERFILE_PATH', defaultValue: 'ci_cd/docker/Dockerfile')
+        string(name: 'DOCKER_CONTAINER_NAME', defaultValue: 'test_api')
         string(name: 'JENKINSFILE_PATH', defaultValue: 'ci_cd/jenkins/Jenkinsfile_qa')
-      ])
-    ])
+    }
 
     stages {
         stage("Build") {
