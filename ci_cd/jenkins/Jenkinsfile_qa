@@ -11,6 +11,7 @@ pipeline {
         string(name: 'DOCKER_IMAGE_TAG', defaultValue: 'acruzr/spring-test-api')
         string(name: 'DOCKERFILE_PATH', defaultValue: 'ci_cd/docker/Dockerfile')
         string(name: 'DOCKER_CONTAINER_NAME', defaultValue: 'test_api')
+        #this parameter should be provided in the pipeline and activate the job as parameterized
         string(name: 'JENKINSFILE_PATH', defaultValue: 'ci_cd/jenkins/Jenkinsfile_qa')
     }
 
@@ -28,6 +29,11 @@ pipeline {
             }
         }
 
+        stage('Deploy - QA') {
+            steps {
+                deployApp('qa')
+            }
+        }
 
     }
 }
@@ -42,6 +48,8 @@ def deployApp(environment) {
 
     if("${environment}" == "dev") {
         port = 8888
+    } else if("${environment}" == 'qa'){
+        port = 8484
     } else {
         println "Environment not valid"
         System.exit(0)
