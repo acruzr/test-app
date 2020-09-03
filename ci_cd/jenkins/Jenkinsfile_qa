@@ -11,7 +11,7 @@ pipeline {
         string(name: 'DOCKER_IMAGE_TAG', defaultValue: 'acruzr/spring-test-api')
         string(name: 'DOCKERFILE_PATH', defaultValue: 'ci_cd/docker/Dockerfile')
         string(name: 'DOCKER_CONTAINER_NAME', defaultValue: 'test_api')
-        #this parameter should be provided in the pipeline and activate the job as parameterized
+        // this parameter should be provided in the pipeline and activate the job as parameterized
         string(name: 'JENKINSFILE_PATH', defaultValue: 'ci_cd/jenkins/Jenkinsfile_qa')
     }
 
