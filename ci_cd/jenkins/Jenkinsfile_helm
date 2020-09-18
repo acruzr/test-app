@@ -1,0 +1,40 @@
+#!/usr/bin/groovy
+
+pipeline {
+    agent any
+    tools {
+        maven 'maven-3.63'
+    }
+    options {
+        disableConcurrentBuilds()
+    }
+    stages {
+        stage('Pre-Build') {
+            steps {
+                git url: 'https://github.com/acruzr/test-app.git'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'mvn clean install package'
+            }
+        }
+        stage('Pre-Publish') {
+            steps {
+                sh 'cp -r ./target/*.jar ./ci_cd/docker'
+            }
+        }
+        stage('Publish') {
+            steps {
+                publishArtifact()
+            }
+        }
+    }
+}
+
+def publishArtifact() {
+    def app = docker.build("acruzr/springboot-api-test:${BUILD_NUMBER}", '-f ./ci_cd/docker/Dockerfile ./ci_cd/docker')
+    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-acruzr-credential') {
+        app.push()
+    }
+}
