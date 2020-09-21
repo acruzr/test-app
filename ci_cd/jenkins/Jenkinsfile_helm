@@ -21,19 +21,29 @@ pipeline {
         }
         stage('Pre-Publish') {
             steps {
-                sh 'cp -r ./target/*.jar ./ci_cd/docker'
+                sh 'cp -r ./target/*.jar ./docker'
             }
         }
         stage('Publish') {
             steps {
+                sh 'echo Publishing...'
+                sh 'pwd'
                 publishArtifact()
+                sh 'docker images ls'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh 'echo Deploying...'
+                sh 'pwd'
+                sh "helm upgrade --install --set image.tag=${BUILD_NUMBER} springboot-api-test ./k8s/chart/springboot-api-test"
             }
         }
     }
 }
 
 def publishArtifact() {
-    def app = docker.build("acruzr/springboot-api-test:${BUILD_NUMBER}", '-f ./ci_cd/docker/Dockerfile ./ci_cd/docker')
+    def app = docker.build("acruzr/springboot-api-test:${BUILD_NUMBER}", '-f ./docker/Dockerfile ./docker')
     docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-acruzr-credential') {
         app.push()
     }
